@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Framework\Router;
 
@@ -6,20 +8,22 @@ namespace Framework\Router;
 // use Aura\Router\RouterContainer;
 // use Aura\Router\Rule\Path;
 
+use Aura\Router\Exception\ImmutableProperty;
+use Aura\Router\Exception\RouteAlreadyExists;
 use Aura\Router\RouterContainer;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuraRouter implements RouterInterface
 {
     /**
-     * @var RouterContainer
+     * @var ?RouterContainer
      */
-    private $router;
+    private ?RouterContainer $router;
 
     /**
      * @var \Aura\Router\Route[]
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
      * @param RouterContainer|null $router
@@ -34,8 +38,9 @@ class AuraRouter implements RouterInterface
 
     /**
      * @param Route $route
+     * @throws RouteAlreadyExists|ImmutableProperty
      */
-    public function add(Route $route)
+    public function add(Route $route): void
     {
         $auraRoute = new \Aura\Router\Route();
         $auraRoute->name($route->name());
@@ -49,7 +54,7 @@ class AuraRouter implements RouterInterface
     /**
      * @param ServerRequestInterface $request
      */
-    public function match(ServerRequestInterface $request)
+    public function match(ServerRequestInterface $request): bool|\Aura\Router\Route
     {
         $matcher = $this->router->getMatcher();
 

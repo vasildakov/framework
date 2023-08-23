@@ -2,6 +2,7 @@
 
 namespace Framework\Action;
 
+use DateTime;
 use Psr\Http\Server\MiddlewareInterface;
 
 use Fig\Http\Message\StatusCodeInterface;
@@ -15,10 +16,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Ping implements MiddlewareInterface
 {
-    /**
-     * @param \DateTime $datetime
-     */
-    public function __construct(\DateTime $datetime)
+    private DateTime $datetime;
+
+
+    public function __construct(DateTime $datetime)
     {
         $this->datetime = $datetime;
     }
@@ -28,14 +29,14 @@ class Ping implements MiddlewareInterface
      * to the next middleware component to create the response.
      *
      * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
+     * @param RequestHandlerInterface|null $handler
      *
      * @return ResponseInterface
      */
     public function process(
         ServerRequestInterface $request,
-        RequestHandlerInterface $handler = null): ResponseInterface
-    {
+        RequestHandlerInterface $handler = null
+    ): ResponseInterface {
         $timestamp = $this->datetime->getTimestamp();
 
         return new JsonResponse(['ack' => $timestamp],StatusCodeInterface::STATUS_OK);

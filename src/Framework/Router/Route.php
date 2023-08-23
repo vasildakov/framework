@@ -7,22 +7,22 @@ final class Route
     /**
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
      * @var callable
      */
     private $handler;
 
-   /**
+    /**
      * @var string
      */
-    private $method;
+    private string $method;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
 
     /**
@@ -41,7 +41,7 @@ final class Route
         $this->setName($name);
     }
 
-    private function setPath($path)
+    private function setPath($path): self
     {
         if (! is_string($path)) {
             throw new \InvalidArgumentException('Invalid path; must be a string');
@@ -51,7 +51,7 @@ final class Route
         return $this;
     }
 
-    public function path()
+    public function path(): string
     {
         return $this->path;
     }
@@ -87,7 +87,7 @@ final class Route
         return $this;
     }
 
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }

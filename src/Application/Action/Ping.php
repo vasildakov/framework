@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Application\Action;
 
 use Psr\Http\Message\ResponseInterface;
@@ -12,8 +14,8 @@ use Laminas\Diactoros\Response\JsonResponse;
 class Ping implements MiddlewareInterface
 {
     /**
-     * @param  ServerRequestInterface   $request
-     * @param  RequestHandlerInterface        $handler
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface|null $handler
      * @return ResponseInterface        $response
      */
     public function process(

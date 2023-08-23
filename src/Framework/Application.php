@@ -1,9 +1,12 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Framework;
 
 use Framework\Router\RouterInterface;
 
+use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,22 +25,22 @@ class Application implements ApplicationInterface
     /**
      * @var RouterInterface
      */
-    private $router;
+    private RouterInterface $router;
 
     /**
      * @var array
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
      * @var EmitterInterface
      */
-    private $emitter;
+    private EmitterInterface $emitter;
 
     /**
      * @var ContainerInterface
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * Constructor
@@ -53,7 +56,7 @@ class Application implements ApplicationInterface
         $this->emitter    = $emitter;
     }
 
-    public function getEmitter()
+    public function getEmitter(): EmitterInterface|SapiEmitter
     {
         if (!$this->emitter) {
             $this->emitter = new SapiEmitter();
@@ -64,9 +67,9 @@ class Application implements ApplicationInterface
     /**
      * Emitting responses
      *
-     * @param ServerRequestInterface
+     * @param ServerRequestInterface|null $request
      */
-    public function run(ServerRequestInterface $request = null)
+    public function run(ServerRequestInterface $request = null): void
     {
         $request = $request ?: ServerRequestFactory::fromGlobals();
 
@@ -75,7 +78,6 @@ class Application implements ApplicationInterface
         $emitter = $this->getEmitter();
         $emitter->emit($response);
     }
-
 
     /**
      * Route
@@ -86,7 +88,7 @@ class Application implements ApplicationInterface
      * @param  string $name
      * @return Router\Route
      */
-    public function route($path, $handler, $method, $name)
+    public function route($path, $handler, $method, $name): Router\Route
     {
         $route = new Router\Route($path, $handler, $method, $name);
         $this->router->add($route);
@@ -98,10 +100,10 @@ class Application implements ApplicationInterface
     /**
      * Process
      *
-     * @param  ServerRequestInterface $request
-     * @return ResponseInterface $response
+     * @param ServerRequestInterface $request
+     * @return EmptyResponse|ResponseInterface $response
      */
-    public function process(ServerRequestInterface $request)
+    public function process(ServerRequestInterface $request): Response\EmptyResponse|ResponseInterface
     {
         $route = $this->router->match($request);
 

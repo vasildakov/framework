@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
+use Application\Action\Home;
 use Laminas\ServiceManager\ServiceManager;
 use Aura\Router\RouterContainer;
 
@@ -15,39 +20,51 @@ use Framework\Router\RouterInterface;
 use Framework\Router\AuraRouter;
 
 
-$container = new ServiceManager;
+(function() {
 
-// router
-$container->setFactory(RouterInterface::class, function ($container) {
-    return new AuraRouter(new RouterContainer());
-});
+    //$container = require 'config/container.php';
 
-// emitter
-$container->setFactory(EmitterInterface::class, function ($container) {
-    return new SapiEmitter();
-});
+    /** @var \Psr\Container\ContainerInterface $container */
+    $container = new ServiceManager();
 
-// datetime
-$container->setFactory(DateTime::class, function ($container) {
-    return new DateTime();
-});
+    // Router
+    $container->setFactory(RouterInterface::class, function ($container) {
+        return new AuraRouter(new RouterContainer());
+    });
 
-// ping
-$container->setFactory(Ping::class, function ($container) {
-    $datetime = $container->get(DateTime::class);
-    return new Ping($datetime);
-});
+    // Emitter
+    $container->setFactory(EmitterInterface::class, function ($container) {
+        return new SapiEmitter();
+    });
 
-// application
-$container->setFactory(Application::class, function ($container) {
-    $router  = $container->get(RouterInterface::class);
-    $emitter = $container->get(EmitterInterface::class);
-    return new Application($router, $emitter);
-});
+    // Datetime
+    $container->setFactory(DateTime::class, function ($container) {
+        return new DateTime();
+    });
 
+    // Home
+    $container->setFactory(Ping::class, function ($container) {
+        $datetime = $container->get(DateTime::class);
+        return new Ping($datetime);
+    });
 
-$application = $container->get(Application::class);
+    // Ping
+    $container->setFactory(Home::class, function ($container) {
+        $datetime = $container->get(DateTime::class);
+        return new Home();
+    });
 
-$application->route('/ping', $container->get(Ping::class), 'GET', 'ping');
+    // Application
+    $container->setFactory(Application::class, function ($container) {
+        $router  = $container->get(RouterInterface::class);
+        $emitter = $container->get(EmitterInterface::class);
+        return new Application($router, $emitter);
+    });
 
-$application->run();
+    $application = $container->get(Application::class);
+
+    $application->route('/', $container->get(Home::class), 'GET', 'home');
+    $application->route('/ping', $container->get(Ping::class), 'GET', 'ping');
+
+    $application->run();
+})();
