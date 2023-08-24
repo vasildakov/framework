@@ -5,19 +5,14 @@ declare(strict_types = 1);
 namespace Framework;
 
 use Framework\Router\RouterInterface;
-
-use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
-use Laminas\Diactoros\ServerRequest;
+use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 /*
  * Application
@@ -90,8 +85,12 @@ class Application implements ApplicationInterface
      * @param  string $name
      * @return Router\Route
      */
-    public function route($path, $handler, $method, $name): Router\Route
-    {
+    public function route(
+        string $path,
+        string $handler,
+        string $method,
+        string $name
+    ): Router\Route {
         $route = new Router\Route($path, $handler, $method, $name);
         $this->router->add($route);
 
@@ -110,16 +109,10 @@ class Application implements ApplicationInterface
         $route = $this->router->match($request);
 
         if ($route) {
-            $action = $route->handler;
-            if ($action instanceof RequestHandlerInterface) {
-                $response = $action->handle($request);
+            if (!$route->handler instanceof RequestHandlerInterface) {
+                throw new \RuntimeException();
             }
-            elseif ($action instanceof MiddlewareInterface) {
-                $response = $action->process($request);
-            } else {
-                $response = new Response\EmptyResponse();
-            }
-            return $response;
+            return $route->handler->handle($request);
         }
         return new Response\EmptyResponse();
     }

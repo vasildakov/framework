@@ -27,7 +27,8 @@ class RouterFactory
 
         foreach ($routes as $route) {
             extract($route);
-            $map->route($name, $path, new $handler)->allows($method);
+            $handler = $container->get($handler);
+            $map->route($name, $path, $handler)->allows($method);
         }
 
         return new AuraBridge($router);

@@ -11,9 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Application\Action;
+namespace Application\Handler;
 
 use Fig\Http\Message\StatusCodeInterface;
+use Framework\Handler\AbstractHandler;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,11 +27,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  * @copyright 2009-2023 Neutrino.bg
  * @version 1.0
  */
-class Example
+class Example extends AbstractHandler
 {
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler = null): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new JsonResponse(
             [

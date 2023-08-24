@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Application\Action;
+namespace Application\Handler;
 
 use Fig\Http\Message\StatusCodeInterface;
 use Framework\Handler\AbstractHandler;
@@ -36,9 +36,7 @@ class Home extends AbstractHandler
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function handle(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler = null): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $loader = new \Twig\Loader\ArrayLoader([
             'index' => '{{ message }}',

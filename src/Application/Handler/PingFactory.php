@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Application\Action;
+namespace Application\Handler;
 
-use DateTime;
+use Application\Service\ImmutableClock;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -33,6 +33,6 @@ class PingFactory
      */
     public function __invoke(ContainerInterface $container): Ping
     {
-        return new Ping($container->get(DateTime::class));
+        return new Ping($container->get(ImmutableClock::class));
     }
 }
