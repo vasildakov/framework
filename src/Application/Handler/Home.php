@@ -16,19 +16,11 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class Home extends AbstractHandler
+final class Home extends AbstractHandler
 {
     public function __construct()
     {
-    }
-
-    /**
-     * @param  RequestInterface   $request
-     * @return ResponseInterface  $response
-     */
-    public function __invoke(RequestInterface $request) : ResponseInterface
-    {
-
+        // TemplateInterface
     }
 
     /**
@@ -39,11 +31,11 @@ class Home extends AbstractHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $loader = new \Twig\Loader\ArrayLoader([
-            'index' => '{{ message }}',
+            'index' => '<h3>{{ message }}</h3>',
         ]);
         $twig = new \Twig\Environment($loader);
 
-        $html = $twig->render('index', ['message' => 'Hello from Twig!']);
+        $html = $twig->render('index', ['message' => 'Hello Twig!']);
 
         return new HtmlResponse($html) ;
     }
