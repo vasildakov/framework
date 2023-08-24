@@ -16,6 +16,8 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /*
  * Application
@@ -52,8 +54,8 @@ class Application implements ApplicationInterface
         RouterInterface $router = null,
         EmitterInterface $emitter = null
     ) {
-        $this->router     = $router;
-        $this->emitter    = $emitter;
+        $this->router  = $router;
+        $this->emitter = $emitter;
     }
 
     public function getEmitter(): EmitterInterface|SapiEmitter
@@ -101,15 +103,23 @@ class Application implements ApplicationInterface
      * Process
      *
      * @param ServerRequestInterface $request
-     * @return EmptyResponse|ResponseInterface $response
+     * @return ResponseInterface $response
      */
-    public function process(ServerRequestInterface $request): Response\EmptyResponse|ResponseInterface
+    public function process(ServerRequestInterface $request): ResponseInterface
     {
         $route = $this->router->match($request);
 
         if ($route) {
-            $middleware = $route->handler;
-            return $middleware->process($request);
+            $action = $route->handler;
+            if ($action instanceof RequestHandlerInterface) {
+                $response = $action->handle($request);
+            }
+            elseif ($action instanceof MiddlewareInterface) {
+                $response = $action->process($request);
+            } else {
+                $response = new Response\EmptyResponse();
+            }
+            return $response;
         }
         return new Response\EmptyResponse();
     }

@@ -10,6 +10,7 @@ namespace Framework\Router;
 
 use Aura\Router\Exception\ImmutableProperty;
 use Aura\Router\Exception\RouteAlreadyExists;
+use Aura\Router\Route;
 use Aura\Router\RouterContainer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -37,10 +38,11 @@ class AuraRouter implements RouterInterface
     }
 
     /**
-     * @param Route $route
-     * @throws RouteAlreadyExists|ImmutableProperty
+     * @param \Framework\Router\Route $route
+     * @throws ImmutableProperty
+     * @throws RouteAlreadyExists
      */
-    public function add(Route $route): void
+    public function add(\Framework\Router\Route $route): void
     {
         $auraRoute = new \Aura\Router\Route();
         $auraRoute->name($route->name());
@@ -53,6 +55,7 @@ class AuraRouter implements RouterInterface
 
     /**
      * @param ServerRequestInterface $request
+     * @return bool|Route
      */
     public function match(ServerRequestInterface $request): bool|\Aura\Router\Route
     {

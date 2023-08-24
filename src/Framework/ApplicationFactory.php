@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Framework;
 
@@ -7,7 +9,7 @@ use Psr\Container\ContainerInterface;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Framework\Router\RouterInterface;
 
-class ApplicationFactory
+final class ApplicationFactory
 {
     /**
      * @param  ContainerInterface $container
@@ -29,8 +31,6 @@ class ApplicationFactory
             ? $container->get(EmitterInterface::class)
             : null;
 
-        $application = new Application($router, $container, $emitter);
-
-        return $application;
+        return new Application($router, $emitter);
     }
 }
