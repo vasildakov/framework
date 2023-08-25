@@ -25,7 +25,9 @@ $array = [
             Handler\Ping::class => Handler\PingFactory::class,
             Handler\Home::class => InvokableFactory::class,
             Handler\Example::class => InvokableFactory::class,
+            Handler\FindAllUsers::class => Handler\FindAllUsersFactory::class,
             Service\ImmutableClock::class => InvokableFactory::class,
+            Application\Repository\InMemoryUserRepository::class => InvokableFactory::class,
         ],
     ],
     'routes' => [
@@ -46,6 +48,12 @@ $array = [
             'path' => '/example',
             'method' => 'GET',
             'handler' => Handler\Example::class
+        ],
+            [
+            'name' => 'users',
+            'path' => '/users',
+            'method' => 'GET',
+            'handler' => Handler\FindAllUsers::class
         ]
     ]
 ];

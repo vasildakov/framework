@@ -17,7 +17,7 @@ use Doctrine\Migrations\Tools\Console\Command;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 
-$paths = array("./module/Application/src/Entity");
+$paths = array("./src/Application/Entity");
 $isDevMode = true;
 
 // Retrieve configuration
@@ -31,7 +31,6 @@ if ($isDevMode === true) {
 // the connection configuration
 $dbParams = $config['doctrine']['connection']['orm_default']['params'];
 
-
 // doctrine entity manager configuration
 $config = new Configuration();
 $config->setMetadataCache(new ArrayAdapter());
@@ -42,5 +41,10 @@ $config->setQueryCache(new ArrayAdapter());
 \Doctrine\DBAL\Types\Type::addType('uuid', Ramsey\Uuid\Doctrine\UuidType::class);
 
 $config = ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
-$connection = DriverManager::getConnection($dbParams, $config);
+//$connection = DriverManager::getConnection($dbParams, $config);
+$connection = DriverManager::getConnection([
+    'driver' => 'pdo_sqlite',
+    'path' => './data/db.sqlite',
+], $config);
+
 $entityManager = new EntityManager($connection, $config);

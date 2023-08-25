@@ -28,6 +28,9 @@ return [
                 ],
             ],
         ],
+        'driver' => [
+
+        ],
         'authentication' => [
             'orm_default' => [
                 'object_manager' => \Doctrine\ORM\EntityManager::class,
