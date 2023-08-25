@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+
+// replace with mechanism to retrieve EntityManager in your app
+(static function (): void {
+    // replace with path to your own project bootstrap file
+    require_once 'bootstrap.php';
+
+    $commands = [
+        // Migrations Commands
+        new \Doctrine\Migrations\Tools\Console\Command\CurrentCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\DiffCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\ExecuteCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\GenerateCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\LatestCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\ListCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\MigrateCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\RollupCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\StatusCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\UpToDateCommand(),
+        new \Doctrine\Migrations\Tools\Console\Command\VersionCommand(),
+    ];
+
+    ConsoleRunner::run(
+        new SingleManagerProvider($entityManager),
+        $commands
+    );
+})();

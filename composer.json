@@ -22,7 +22,11 @@
         "phpunit/php-code-coverage": "^9.2",
         "laminas/laminas-httphandlerrunner": "^2.1",
         "twig/twig": "^3.0",
-        "psr/clock": "^1.0"
+        "psr/clock": "^1.0",
+        "ramsey/uuid-doctrine": "^2.0",
+        "doctrine/orm": "^2.16",
+        "doctrine/migrations": "^3.6",
+        "symfony/cache": "^6.3"
 
     },
     "require-dev": {
