@@ -4,10 +4,6 @@ declare(strict_types = 1);
 
 namespace Framework\Router;
 
-// use Aura\Router\Route as AuraRoute;
-// use Aura\Router\RouterContainer;
-// use Aura\Router\Rule\Path;
-
 use Aura\Router\Exception\ImmutableProperty;
 use Aura\Router\Exception\RouteAlreadyExists;
 use Aura\Router\Route;

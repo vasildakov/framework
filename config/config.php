@@ -12,14 +12,11 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 $array = [
     'dependencies' => [
         'invokables' => [
-
-
             EmitterInterface::class => SapiEmitter::class,
             RouterContainer::class => InvokableFactory::class,
-
         ],
         'factories' => [
-            Framework\Application::class            => Framework\ApplicationFactory::class,
+            Framework\Application::class => Framework\ApplicationFactory::class,
             Framework\Router\RouterInterface::class => Framework\Container\RouterFactory::class,
             DateTime::class => InvokableFactory::class,
             Handler\Ping::class => Handler\PingFactory::class,
