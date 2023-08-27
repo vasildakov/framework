@@ -1,0 +1,13 @@
+{# templates/navigation.html.twig #}
+
+{# {{ dump(navigation) }} #}
+
+{% block navigation %}
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+        {% for nav in navigation %}
+            <a class="nav-link {% if nav.route == route %} active{% endif %}" href="{{ nav.route }}">
+                {{ nav.label }}
+            </a>
+        {% endfor %}
+    </nav>
+{% endblock %}

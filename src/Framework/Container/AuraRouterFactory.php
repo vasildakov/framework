@@ -4,21 +4,21 @@ declare(strict_types = 1);
 
 namespace Framework\Container;
 
+use Aura\Router\RouterContainer as Router;
+use Framework\Router\Adapter\AuraRouter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Aura\Router\RouterContainer as Router;
-use Framework\Router\AuraRouter as AuraBridge;
 use Psr\Container\NotFoundExceptionInterface;
 
-class RouterFactory
+class AuraRouterFactory
 {
     /**
      * @param ContainerInterface $container
-     * @return AuraBridge
+     * @return AuraRouter
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __invoke(ContainerInterface $container): AuraBridge
+    public function __invoke(ContainerInterface $container): AuraRouter
     {
         $routes = $container->get('config')['routes'];
 
@@ -31,6 +31,6 @@ class RouterFactory
             $map->route($name, $path, $handler)->allows($method);
         }
 
-        return new AuraBridge($router);
+        return new AuraRouter($router);
     }
 }

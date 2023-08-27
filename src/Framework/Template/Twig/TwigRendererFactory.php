@@ -22,8 +22,35 @@ class TwigRendererFactory
         $config = self::mergeConfig($config);
         /** @var Environment $environment */
         $environment = $container->get(Environment::class);
+        $environment->addExtension(new \Twig\Extension\DebugExtension());
+        $environment->addGlobal('navigation', $this->getNavigationArray());
 
         return new TwigRenderer($environment, $config['extension'] ?? 'html.twig');
+    }
+
+
+    private function getNavigationArray(): array
+    {
+        // https://twig.symfony.com/doc/2.x/advanced.html
+        return [
+            [
+                'label' => 'Home',
+                'route' => '/'
+            ],
+            [
+                'label' => 'Features',
+                'route' => '/features'
+            ],
+            [
+                'label' => 'Contact',
+                'route' => '/contact'
+            ],
+            [
+                'label' => 'About',
+                'route' => '/about'
+            ]
+
+        ];
     }
 
     public static function mergeConfig($config): array

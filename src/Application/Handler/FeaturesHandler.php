@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Application\Handler;
 
 use Framework\Handler\AbstractHandler;
@@ -10,7 +8,7 @@ use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class Home extends AbstractHandler
+class FeaturesHandler extends AbstractHandler
 {
     public function __construct(
         readonly TemplateRendererInterface $renderer
@@ -21,10 +19,10 @@ final class Home extends AbstractHandler
     {
 
         $html = $this->renderer->render(
-            'home/index', [
+            'features/index', [
                 'route' => $request->getUri()->getPath(),
                 'title' => 'Framework Twig Template',
-                'heading' => 'Nano Framework'
+                'heading' => 'Features'
             ]
         );
 

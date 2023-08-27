@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Application\Entity;
 
+use Application\Repository\InMemoryUserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Application\Repository\InMemoryUserRepository;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 

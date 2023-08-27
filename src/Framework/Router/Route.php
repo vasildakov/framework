@@ -9,22 +9,22 @@ final class Route
     /**
      * @var string
      */
-    private string $path;
+    public string $path;
 
     /**
      * @var callable
      */
-    private $handler;
+    public $handler;
 
     /**
      * @var string
      */
-    private string $method;
+    public string $method;
 
     /**
      * @var string
      */
-    private string $name;
+    public string $name;
 
 
     /**

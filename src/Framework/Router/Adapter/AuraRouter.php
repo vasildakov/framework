@@ -2,12 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Framework\Router;
+namespace Framework\Router\Adapter;
 
 use Aura\Router\Exception\ImmutableProperty;
 use Aura\Router\Exception\RouteAlreadyExists;
-use Aura\Router\Route;
+use Aura\Router\Route as AuraRoute;
 use Aura\Router\RouterContainer;
+use Framework\Router\Route;
+use Framework\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuraRouter implements RouterInterface
@@ -18,7 +20,7 @@ class AuraRouter implements RouterInterface
     private ?RouterContainer $router;
 
     /**
-     * @var \Aura\Router\Route[]
+     * @var AuraRoute[]
      */
     private array $routes = [];
 
@@ -34,13 +36,13 @@ class AuraRouter implements RouterInterface
     }
 
     /**
-     * @param \Framework\Router\Route $route
+     * @param Route $route
      * @throws ImmutableProperty
      * @throws RouteAlreadyExists
      */
-    public function add(\Framework\Router\Route $route): void
+    public function add(Route $route): void
     {
-        $auraRoute = new \Aura\Router\Route();
+        $auraRoute = new AuraRoute();
         $auraRoute->name($route->name());
         $auraRoute->path($route->path());
         $auraRoute->handler($route->handler());

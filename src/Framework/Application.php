@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Framework;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Framework\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -93,10 +94,8 @@ class Application implements ApplicationInterface
     ): Router\Route {
         $route = new Router\Route($path, $handler, $method, $name);
         $this->router->add($route);
-
         return $route;
     }
-
 
     /**
      * Process
@@ -114,6 +113,9 @@ class Application implements ApplicationInterface
             }
             return $route->handler->handle($request);
         }
-        return new Response\EmptyResponse();
+        return new Response\JsonResponse([
+            'error' => 404,
+            'message' => 'Not Found'
+        ], StatusCodeInterface::STATUS_NOT_FOUND);
     }
 }
