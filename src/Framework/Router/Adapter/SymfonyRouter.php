@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Framework\Router\Adapter;
 
 use Framework\Router\Route;

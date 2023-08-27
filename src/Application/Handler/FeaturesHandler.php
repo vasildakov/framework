@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Application\Handler;
 
 use Framework\Handler\AbstractHandler;

@@ -7,7 +7,6 @@ namespace Framework\Container;
 use Framework\Router\Adapter\LaminasRouter;
 use Laminas\Router\SimpleRouteStack;
 use Psr\Container\ContainerInterface;
-
 class LaminasRouterFactory
 {
     public function __invoke(ContainerInterface $container): LaminasRouter
